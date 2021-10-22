@@ -65,21 +65,23 @@ for link in gasStationLinks:
     print("added " + name + " to the list.")
 
 print("data collected and stored.\n")
-#print(gasStationData[1][1])
 
-userInput = input("Please enter:\n 'list' - to display all gas stations with the corresponding diesel prices\n 'cheapest' - to display only the cheapest one\n")
+while True:
 
-#TODO add switch case statement to enable user interaction
+    userInput = input("Please enter:\n 'list' - to display all gas stations with the corresponding diesel prices\n 'cheapest' - to display only the cheapest one\n Input: ")
 
-if userInput == "list":
-    for gasStation in gasStationData:
-        print("Price:",gasStation[1], "€ - ", gasStation[0])
+    if userInput == "list":
+        for gasStation in gasStationData:
+            print("Price:",gasStation[1], "€ - ", gasStation[0])
 
 
-elif "cheapest":
-    cheapestGasStation = showCheapestPrice(gasStationData)
-    if cheapestGasStation[1] == 100 or cheapestGasStation[0] == "":
-        print("error - no data")
+    elif "cheapest":
+        cheapestGasStation = showCheapestPrice(gasStationData)
+        if cheapestGasStation[1] == 100 or cheapestGasStation[0] == "":
+            print("error - no data")
+        
+        else:
+            print("Price:",cheapestGasStation[1], "€ - ", cheapestGasStation[0])
     
     else:
-        print("Price:",cheapestGasStation[1], "€ - ", cheapestGasStation[0])
+        print("Unknown input. Ignoring.")
