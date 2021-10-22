@@ -18,6 +18,18 @@ def getGasStationPrice(website):
     price = float(priceString)
     return price
 
+
+def showCheapestPrice(gasStationData):
+    current = 100
+    currentName = ""
+    for gasStation in gasStationData:
+        if gasStation[1] < current:
+            current = gasStation[1]
+            currentName = gasStation[0]
+    
+    cheapestGasStation = [currentName, current]
+    return cheapestGasStation
+
 #TODO add price comparing algorithm
 
 
@@ -47,6 +59,7 @@ for link in gasStationLinks:
 
     except:
         print("error - parsing gas station data from website HTML went wrong. Skipping that gas station.")
+        break
     
     gasStationData.append([name,price])
     print("added " + name + " to the list.")
@@ -54,6 +67,19 @@ for link in gasStationLinks:
 print("data collected and stored.\n")
 #print(gasStationData[1][1])
 
-print("Please enter:\n 'list' - to display all gas stations with the corresponding diesel prices\n 'cheapest' - to display only the cheapest one")
+userInput = input("Please enter:\n 'list' - to display all gas stations with the corresponding diesel prices\n 'cheapest' - to display only the cheapest one\n")
 
 #TODO add switch case statement to enable user interaction
+
+if userInput == "list":
+    for gasStation in gasStationData:
+        print("Price:",gasStation[1], "€ - ", gasStation[0])
+
+
+elif "cheapest":
+    cheapestGasStation = showCheapestPrice(gasStationData)
+    if cheapestGasStation[1] == 100 or cheapestGasStation[0] == "":
+        print("error - no data")
+    
+    else:
+        print("Price:",cheapestGasStation[1], "€ - ", cheapestGasStation[0])
