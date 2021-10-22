@@ -2,23 +2,6 @@
 import requests #library to make a webrequest
 
 #here are my functions to avoid duplicated code
-def makeWebrequest(url):
-    try:
-        responseFromWebsite = requests.get(url)
-    
-    #catch error when something wentsw wrong with webrequest
-    except:
-        return "error"
-
-    
-    #return success + clever-tanken content
-    return responseFromWebsite.text
-
-def parseGasStationInfo(website):
-    name = getGasStationName(website)
-    price = getGasStationPrice(website)
-    print(name, price)
-
 
 def getGasStationName(website):
     startIndex = int(website.find("<title>")) + 7
@@ -32,28 +15,45 @@ def getGasStationPrice(website):
     startIndex = website.find("current-price-1") + 15 + 2
     endIndex = website.find("</span>", startIndex)
     priceString = website[startIndex:endIndex]
-    #price = int(priceString)
-    return priceString
+    price = float(priceString)
+    return price
 
-    
-
-#read text file which stores all clever-tanken links of gasstations that are of interest
-file = open("gas_stations.txt")
-
-#create a list and then store the links in a list to be able to call the links seperately
-gasStationLinks = []
-for i in file:
-    gasStationLinks.append(i)
+#TODO add price comparing algorithm
 
 
-#webrequests to clever-tanken
-#print(makeWebrequest(gasStationLinks[0]))
+#START-POINT
+#create empty gasStation List where info will be stored after requesting them
+gasStationData = []    
 
+print("read text file where all clever-tanken gas station links of interest are stored..")
+gasStationLinks = open("gas_stations.txt")
+
+print("Data collection for every gas station...")
 for link in gasStationLinks:
-    website = makeWebrequest(link)
+    print("\nrequesting data of link:" + link)
+    
+    #catch error when something wents wrong with webrequest
+    try:
+        website = requests.get(link).text
     
     #in case that the webrequest of that specific gasStation didn't work end the iteration before parsing
-    if website == "error":
-        break    
+    except:
+        print("requesting link" + link + "failed. Skipping that gas station.")
+        break  
     
-    parseGasStationInfo(website)
+    try:
+        name = getGasStationName(website)
+        price = getGasStationPrice(website)
+
+    except:
+        print("error - parsing gas station data from website HTML went wrong. Skipping that gas station.")
+    
+    gasStationData.append([name,price])
+    print("added " + name + " to the list.")
+
+print("data collected and stored.\n")
+#print(gasStationData[1][1])
+
+print("Please enter:\n 'list' - to display all gas stations with the corresponding diesel prices\n 'cheapest' - to display only the cheapest one")
+
+#TODO add switch case statement to enable user interaction
