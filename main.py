@@ -30,8 +30,6 @@ def showCheapestPrice(gasStationData):
     cheapestGasStation = [currentName, current]
     return cheapestGasStation
 
-#TODO add price comparing algorithm
-
 
 #START-POINT
 #create empty gasStation List where info will be stored after requesting them
