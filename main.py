@@ -19,7 +19,7 @@ def getGasStationPrice(website):
     return price
 
 
-def showCheapestPrice(gasStationData):
+def getCheapestGasStation(gasStationData):
     current = 100
     currentName = ""
     for gasStation in gasStationData:
@@ -49,7 +49,7 @@ for link in gasStationLinks:
     #in case that the webrequest of that specific gasStation didn't work end the iteration before parsing
     except:
         print("requesting link" + link + "failed. Skipping that gas station.")
-        break  
+        continue  
     
     try:
         name = getGasStationName(website)
@@ -57,7 +57,7 @@ for link in gasStationLinks:
 
     except:
         print("error - parsing gas station data from website HTML went wrong. Skipping that gas station.")
-        break
+        continue
     
     gasStationData.append([name,price])
     print("added " + name + " to the list.")
@@ -74,7 +74,7 @@ while True:
 
 
     elif "cheapest":
-        cheapestGasStation = showCheapestPrice(gasStationData)
+        cheapestGasStation = getCheapestGasStation(gasStationData)
         if cheapestGasStation[1] == 100 or cheapestGasStation[0] == "":
             print("error - no data")
         
